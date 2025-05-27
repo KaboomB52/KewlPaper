@@ -49,7 +49,7 @@ public class PaperVersionFetcher implements VersionFetcher {
         if (build.buildNumber().isEmpty() && build.gitCommit().isEmpty()) {
             updateMessage = text("You are running a development version without access to version information", color(0xFF5300));
         } else {
-            updateMessage = getUpdateStatusMessage("PaperMC/Paper", build);
+            updateMessage = getUpdateStatusMessage("KaboomB52/KewlPaper", build);
         }
         final @Nullable Component history = this.getHistory();
 
@@ -59,20 +59,16 @@ public class PaperVersionFetcher implements VersionFetcher {
     private static Component getUpdateStatusMessage(final String repo, final ServerBuildInfo build) {
         int distance = DISTANCE_ERROR;
 
-        final OptionalInt buildNumber = build.buildNumber();
-        if (buildNumber.isPresent()) {
-            distance = fetchDistanceFromSiteApi(build, buildNumber.getAsInt());
-        } else {
-            final Optional<String> gitBranch = build.gitBranch();
-            final Optional<String> gitCommit = build.gitCommit();
-            if (gitBranch.isPresent() && gitCommit.isPresent()) {
-                distance = fetchDistanceFromGitHub(repo, gitBranch.get(), gitCommit.get());
-            }
+        final Optional<String> gitBranch = build.gitBranch();
+        final Optional<String> gitCommit = build.gitCommit();
+
+        if (gitBranch.isPresent() && gitCommit.isPresent()) {
+            distance = fetchDistanceFromGitHub(repo, gitBranch.get(), gitCommit.get());
         }
 
         return switch (distance) {
             case DISTANCE_ERROR -> text("Error obtaining version information", NamedTextColor.YELLOW);
-            case 0 -> text("You are running the latest version", NamedTextColor.GREEN);
+            case 0 -> text("You are running the latest version!", NamedTextColor.GREEN);
             case DISTANCE_UNKNOWN -> text("Unknown version", NamedTextColor.YELLOW);
             default -> text("You are " + distance + " version(s) behind", NamedTextColor.YELLOW)
                 .append(Component.newline())
