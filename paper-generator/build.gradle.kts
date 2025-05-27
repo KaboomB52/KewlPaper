@@ -15,11 +15,11 @@ val serverRuntimeClasspath by configurations.registering { // resolvable?
 }
 
 dependencies {
-    minecraftJar(project(":paper-server", "mappedJarOutgoing"))
-    implementation(project(":paper-server", "macheMinecraftLibraries"))
+    minecraftJar(project(":kewlpaper-server", "mappedJarOutgoing"))
+    implementation(project(":kewlpaper-server", "macheMinecraftLibraries"))
 
     implementation("com.squareup:javapoet:1.13.0")
-    implementation(project(":paper-api"))
+    implementation(project(":kewlpaper-api"))
     implementation("io.papermc.typewriter:typewriter:1.0.1") {
         isTransitive = false // paper-api already have everything
     }
@@ -29,21 +29,21 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    serverRuntimeClasspath(project(":paper-server", "runtimeConfiguration"))
+    serverRuntimeClasspath(project(":kewlpaper-server", "runtimeConfiguration"))
 }
 
 val gameVersion = providers.gradleProperty("mcVersion")
 
 val rewriteApi = tasks.registerGenerationTask("rewriteApi", true, "api", {
     bootstrapTags = true
-    sourceSet = rootProject.layout.projectDirectory.dir("paper-api")
+    sourceSet = rootProject.layout.projectDirectory.dir("kewlpaper-api")
 }) {
     description = "Rewrite existing API classes"
     classpath(sourceSets.main.map { it.runtimeClasspath })
 }
 
 val rewriteImpl = tasks.registerGenerationTask("rewriteImpl", true, "impl", {
-    sourceSet = rootProject.layout.projectDirectory.dir("paper-server")
+    sourceSet = rootProject.layout.projectDirectory.dir("kewlpaper-server")
     serverClassPath.from(serverRuntimeClasspath)
 }) {
     description = "Rewrite existing implementation classes"
@@ -59,14 +59,14 @@ tasks.register("rewrite") {
 
 val generateApi = tasks.registerGenerationTask("generateApi", false, "api", {
     bootstrapTags = true
-    sourceSet = rootProject.layout.projectDirectory.dir("paper-api")
+    sourceSet = rootProject.layout.projectDirectory.dir("kewlpaper-api")
 }) {
     description = "Generate new API classes"
     classpath(sourceSets.main.map { it.runtimeClasspath })
 }
 
 val generateImpl = tasks.registerGenerationTask("generateImpl", false, "impl", {
-    sourceSet = rootProject.layout.projectDirectory.dir("paper-server")
+    sourceSet = rootProject.layout.projectDirectory.dir("kewlpaper-server")
 }) {
     description = "Generate new implementation classes"
     classpath(sourceSets.main.map { it.runtimeClasspath })
@@ -86,7 +86,7 @@ if (providers.gradleProperty("updatingMinecraft").getOrElse("false").toBoolean()
         mainClass.set("io.papermc.generator.rewriter.utils.ScanOldGeneratedSourceCode")
         classpath(sourceSets.main.map { it.runtimeClasspath })
 
-        val projectDirs = listOf("paper-api", "paper-server").map { rootProject.layout.projectDirectory.dir(it) }
+        val projectDirs = listOf("kewlpaper-api", "kewlpaper-server").map { rootProject.layout.projectDirectory.dir(it) }
         args(projectDirs.map { it.asFile.absolutePath })
         val workDirs = projectDirs.map { it.dir("src/main/java") }
 

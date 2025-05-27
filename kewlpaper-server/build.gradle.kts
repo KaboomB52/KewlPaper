@@ -130,7 +130,7 @@ abstract class MockitoAgentProvider : CommandLineArgumentProvider {
 }
 
 dependencies {
-    implementation(project(":paper-api"))
+    implementation(project(":kewlpaper-api"))
     implementation("ca.spottedleaf:concurrentutil:0.0.3")
     implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
     implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
@@ -183,6 +183,8 @@ dependencies {
     implementation("net.neoforged:srgutils:1.0.9") // Mappings handling
     implementation("net.neoforged:AutoRenamingTool:2.0.3") // Remap plugins
 
+    implementation("net.sf.jopt-simple:jopt-simple:5.0.4")
+
     // Remap reflection
     val reflectionRewriterVersion = "0.0.3"
     implementation("io.papermc:reflection-rewriter:$reflectionRewriterVersion")
@@ -206,14 +208,14 @@ tasks.jar {
         val gitBranch = git.exec(providers, "rev-parse", "--abbrev-ref", "HEAD").get().trim()
         attributes(
             "Main-Class" to "org.bukkit.craftbukkit.Main",
-            "Implementation-Title" to "Paper",
+            "Implementation-Title" to "KewlPaper",
             "Implementation-Version" to implementationVersion,
             "Implementation-Vendor" to date,
-            "Specification-Title" to "Paper",
+            "Specification-Title" to "KewlPaper",
             "Specification-Version" to project.version,
-            "Specification-Vendor" to "Paper Team",
-            "Brand-Id" to "papermc:paper",
-            "Brand-Name" to "Paper",
+            "Specification-Vendor" to "KaboomB52",
+            "Brand-Id" to "ianrich:kewlpaper",
+            "Brand-Name" to "KewlPaper",
             "Build-Number" to (build ?: ""),
             "Build-Time" to buildTime.toString(),
             "Git-Branch" to gitBranch,

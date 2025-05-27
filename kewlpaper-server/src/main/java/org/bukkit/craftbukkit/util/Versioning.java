@@ -11,7 +11,7 @@ public final class Versioning {
     public static String getBukkitVersion() {
         String result = "Unknown-Version";
 
-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/io.papermc.paper/paper-api/pom.properties");
+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/dev.ianrich.paper/kewlpaper-api/pom.properties");
         Properties properties = new Properties();
 
         if (stream != null) {
